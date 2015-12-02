@@ -1,0 +1,207 @@
+" 標準設定例を読み込む
+source $VIMRUNTIME/vimrc_example.vim
+
+" エンコーディング設定
+set encoding=utf-8                                        " vi内部文字コード
+set fileencodings=ucs-bom,iso-2022-jp,euc-jp,utf-8,cp932  " 読み出すファイルの文字コード
+
+" 読み出したファイルがアルファベットのみの場合, fencをutf-8に設定する
+autocmd BufReadPost * if search("[^\x01-\x7e]", 'n') == 0 && &modifiable |
+                        \ set fenc=utf-8 | endif
+
+set title           " ウィンドウタイトルを表示
+set number          " 行番号表示
+set ruler           " カーソルの位置情報を表示
+set cmdheight=1     " コマンドラインの高さ
+set wildmenu        " コマンドラインの上に補完候補を表示
+set showcmd         " コマンドを画面の最下行に表示
+
+set laststatus=2    " ステータスバーを表示
+" ステータスバーに文字・改行コードを表示する
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+
+set guicursor+=a:blinkon0   " カーソルを不点滅
+
+set list            " タブ、改行等を可視化する
+set listchars=tab:`\ ,trail:_  "listの文字設定(タブをスペース、行末スペースを_に設定)
+
+set nowrap          " 行を折り返さない
+" (不明の設定)テキスト挿入中の自動折り返しを日本語に対応させる
+"set formatoptions+=mM
+
+set sidescroll=1    " 水平スクロール幅
+set showmatch       " 閉じ括弧を入力した際、対応する括弧に少しカーソルを移動する
+
+"set textwidth=0     " 入力テキストの最大幅を無効にする(入力テキストの折り返しを行わない)
+set tabstop=4       " 画面上のタブ幅(expandtab等の基準値になるので入力設定にも関わる)
+set expandtab       " タブをスペースに変換する
+set softtabstop=4   " expandtab有効でもBS入力でタブ幅分機能する様にする(本来の機能ではない)
+
+set shiftwidth=4    " 自動インデントの幅(<<,>>でも使われる)
+set autoindent      " 自動でインデントする
+
+set backspace=2     " バックスペースで自動インデント、改行を削除できる様にする
+
+"---------------------------------------------------------------------------
+" 置換後のキーが再マッピングされる ///////////////
+"map        "ノーマル、ビジュアル、演算待ち
+"map!       "挿入、コマンドライン
+"imap       "挿入のみ
+
+" 置換後のキーが再マッピングされない /////////////
+"noremap    "ノーマル、ビジュアル、演算待ち
+"noremap!   "挿入、コマンドライン
+"nnoremap   "ノーマルのみ
+"inoremap   "挿入のみ
+"vnoremap   "ビジュアルのみ
+"cnoremap   "コマンドラインのみ
+
+nnoremap <s-tab> :NERDTreeToggle<CR>
+
+"noremap! <c-u> <left>
+noremap! <c-h> <left>
+noremap! <c-j> <down>
+nnoremap <c-j> <down>
+noremap! <c-k> <up>
+noremap! <c-l> <right>
+
+" タブ移動
+"nnoremap <c-tab> gt
+noremap! <m-j> <left>
+
+" 空行挿入
+nnoremap <space> o<esc>
+
+" 範囲選択した内容をレジスタzへコピー
+vnoremap a "zy
+" 単語単位でレジスタzへコピー
+nnoremap <c-k> viw"zy
+" ()の内容をレジスタzへコピー
+nnoremap <f3> vib"zy
+
+" レジスタzの内容を貼り付け
+"noremap <c-p> "zp
+" レジスタzの内容を複数行の文字範囲で連続貼り付け
+vnoremap <c-l> c<c-r>z<esc>b
+" レジスタzの内容を単語単位で貼り付け
+nnoremap <c-l> ciw<c-r>z<esc>b
+" レジスタzの内容を()の内容範囲で貼り付け
+nnoremap <c-h> cib<c-r>z<esc>b
+"nnoremap <c-h> vib"zpb  "この場合.で繰り返しが行えない上、<c-h>等のキーで上手く動作しない
+
+" エラーウィンドウを<c-c>で表示非表示切り替え
+let s:openedQuickfixWindow = 0
+function! ToggleQuickfixWindow()
+    if 0 == s:openedQuickfixWindow
+        let s:openedQuickfixWindow = 1
+        copen
+    else
+        let s:openedQuickfixWindow = 0
+        cclose
+    endif
+endfunction
+nnoremap <c-c> :call ToggleQuickfixWindow()<CR>
+
+nnoremap <f5> :make!<CR>
+
+" コメントアウト、コメントアウト解除
+noremap <c-x> :s/^  /\/\//<CR><c-o>
+noremap <c-n> :s/^\(\s*\)\/\/\+/\1  /<CR><c-o>
+
+"inoremap { {<CR>}<left><CR><up>
+inoremap { {}<left>
+"inoremap ( ()<left>
+
+"---------------------------------------------------------------------------
+set mouse=a             " 全てのモードでマウスを利用可能にする
+set mousemodel=popup    " マウス右クリックでメニューを表示
+
+" visualモード時のマウスカーソルを逆向きにしない様にする
+set mouseshape-=v:rightup-arrow
+set mouseshape+=v:arrow
+
+"---------------------------------------------------------------------------
+" 検索
+set ignorecase  " パターンマッチングで大文字小文字を区別しない
+set smartcase   " パターンマッチングで大文字小文字両方があった場合区別する
+
+set wrapscan    " 検索が最後まで行ったら、最初に戻る
+set is          " 検索パターン入力中に即検索を行う(incrimental search)
+set nohlsearch  " 検索文字列をハイライトしない
+
+set tags+=tags; " tagsファイルを親ディレクトリへ遡って検索する
+"set hidden      "
+
+"---------------------------------------------------------------------------
+"set cursorline      " カーソル行に色を付ける
+
+" :h cterm-colors
+hi StatusLine   ctermfg=DarkBlue ctermbg=White " ステータスバー
+hi StatusLineNC ctermfg=DarkBlue               " ステータスバー(非アクティブ)
+hi LineNr       ctermfg=DarkGray               " 行番号
+hi CursorLine   cterm=NONE ctermbg=NONE        " カーソル行
+hi Visual       ctermfg=DarkBlue               " 選択領域
+
+hi PreProc   cterm=bold ctermfg=DarkMagenta  " プリプロセッサ
+hi Comment   ctermfg=DarkCyan                " コメント
+hi Statement cterm=bold ctermfg=3            " 制御文
+hi Type      cterm=bold ctermfg=2            " 型
+
+" キーワードの追加登録
+syntax keyword cMyType uint ulong uchar
+hi link cMyType Type
+
+" 全角スペース表示
+hi JpSpace ctermbg=DarkGray
+au BufRead,BufNew * match JpSpace /　/
+
+"---------------------------------------------------------------------------
+" vundle
+"---------------------------------------------------------------------------
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'scrooloose/nerdtree'
+Plugin 'Shougo/neocomplete'
+Plugin 'thinca/vim-qfreplace'
+Plugin 'LeafCage/yankround.vim'
+
+"Plugin 'justmao945/vim-clang'
+Plugin 'Rip-Rip/clang_complete'
+"Plugin 'tokorom/clang_complete.git'
+Plugin 'tokorom/clang_complete-getopts-ios.git'
+
+call vundle#end()
+filetype plugin indent on
+
+"---------------------------------------------------------------------------
+" nerdtree.vim
+"---------------------------------------------------------------------------
+let NERDTreeWinSize=25
+
+"---------------------------------------------------------------------------
+" neocomplete.vim
+"---------------------------------------------------------------------------
+if filereadable(expand('~/.vim/myconfig/neocomplete'))
+  source ~/.vim/myconfig/neocomplete
+endif
+
+"---------------------------------------------------------------------------
+" yankround.vim
+"---------------------------------------------------------------------------
+nmap p <Plug>(yankround-p)
+nmap P <Plug>(yankround-P)
+nmap gp <Plug>(yankround-gp)
+nmap gP <Plug>(yankround-gP)
+nmap <c-p> <Plug>(yankround-prev)
+nmap <c-m> <Plug>(yankround-next)
+
+"---------------------------------------------------------------------------
+if has('mac')
+  set modelines=5
+endif
+

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<root>
+  <appdef>
+    <appname>MacVim</appname>
+    <equal>org.vim.MacVim</equal>
+  </appdef>
+
+  <replacementdef>
+    <replacementname>PC_STYLE_BINDINGS_IGNORE_APPS</replacementname>
+    <replacementvalue>
+      VIRTUALMACHINE,
+      REMOTEDESKTOPCONNECTION,
+      VNC,
+      TEAMVIEWER,
+      EMACS,
+      TERMINAL,
+      X11,
+      CITRIX_XEN_APP_VIEWER,
+      MacVim,
+    </replacementvalue>
+  </replacementdef>
+</root>

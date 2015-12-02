@@ -1,0 +1,7 @@
+# Mac用
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+
+export MANPATH=/opt/local/share/man:$MANPATH
+

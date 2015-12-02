@@ -1,0 +1,315 @@
+// ------------------------------------------------------------------------------------
+ctags -R --langmap=objc:.h.m --languages=objc
+
+// ------------------------------------------------------------------------------------
+CGPoint // struct
+    x       // float
+    y
+
+    ::CGPointMake(0,0) // CGPointを返す
+
+CGSize // struct
+    ::CGSizeMake(10,10) // CGSizeを返す
+
+CGRect // struct
+    origin      // 始点CGPoint
+    size        // サイズCGSize
+
+    ::CGRectZero                // CGRectを返す(全て0)
+    ::CGRectMake(0,0, 100,100)  // CGRectを返す
+
+NSString
+    +stringWithFormat:@"%d", nsinteger   // 数値から文字列へ変換
+    -integerValue                        // 文字列を数値へ変換
+                                         // (最初に現れた数字までを変換。
+                                         // 変換できなかった場合、0になる)
+    -floatValue                          // 6.1.3 → 6.10
+    -UTF8String                          // const char*を返す
+
+    -isEqualToString:@"abc"              // @"abc"と等しいか判定
+
+NSDictionary
+    dic = @{ @"name":@"abc", @"age":33 }; // 初期化
+    dic[@"name"];                         // 取得
+    [dic objectForKey:@"name"];           // 取得
+
+NSURL
+    -fileURLWithPath:path    //
+
+NSSet // 重複した値を格納できないコンテナ
+    anyObject       // 1つ目のオブジェクトを返す？
+
+UIDevice
+    +currentDevice   // 現在のUIDevice*を返す
+
+    .systemVersion   // osのバージョン(NSString*)を返す
+
+
+NSUserDefaults  // ~/Library/Preferences以下にプロパティリスト形式で保存される
+    +standardUserDefaults               // NSUserDefaults*の取得
+
+    -registerDefaults:dictionary         // 辞書データでメモリ上にデフォルト値を設定する
+                                         // (実際に保存は行われない。電源を切ると消える)
+                                         // (既にあるキーは更新しない)
+
+    -setInteger:100 forKey:@"KEY1"       // "KEY1"というキーで値100を登録する。
+                                         // (既にあるキーは更新する)
+    -setFloat:1.23  forKey:@"KEY2"
+    -setDouble:1.23 forKey:@"KEY3"
+    -setBool:YES    forKey:@"KEY4"
+    -setObject:@"s" forKey:@"KEY4"       // "KEY4"というキーで値@"s"(id型)を登録する。
+                                         // NSString, NSNumber, NSArray, NSDictionary,
+                                         // NSData, NSDate, NSURLのデータを登録する。
+
+    -integerForKey:@"KEY1"               // "KEY1"の値を取得
+    -objectForKey:@"KEY4"                // "KEY4"の値(id型)を取得
+
+    -removeObjectForKey:@"KEY1"          // "KEY1"を削除
+                                         // 存在しないキーを削除した場合は無視される
+
+    -synchronize                         // 書き込み指定した内容を即時反映させる
+
+NSThread
+    sleepForTimeInterval:0.5            //
+
+NSNotificationCenter
+    defaultCenter       // デフォルトのNSNotificationCenter*を取得
+
+    +addObserver:self selector:@selector(funcabc:) name:@"abc" object:nil
+    +addObserver:self selector:@selector(funcabc:) name:@"abc" object:_obj
+                        // _objからabcという通知を受け取ったらselfの？funcabcを呼ぶ
+
+
+NSBundle
+    +mainBundle                             // NSBundle*の取得
+
+    infoDictionary                          // NSDictionary*で情報取得？
+        [@"CFBundleShortVersionString"]
+        [@"CFBundleVersion"]
+    pathForResource:@"abc" ofType:@"png"    // リソースabc.pngのパスを返す
+
+
+NSObject
+    performSelector:@selector(funcabc)
+    performSelector:@selector(funcabc:) withObject:nil                      // 引数1個
+    performSelector:@selector(funcabc:var2:) withObject:nil withObject:nil  // 引数2個
+                        // SEL型で示される関数を呼び出す
+    performSelector:@selector(funcabc) withObject:nil afterDelay:0.5 // 引数無しの関数も指定できる？
+                        // SEL型で示される関数を遅延付きで呼び出す
+
+UIApplication
+    +sharedApplication  // UIApplication*を返す
+
+    statusBarHidden    // ステータスバーを隠すかどうか
+                       // ・プロジェクトのinfo
+                       //     Status bar is initially hidden : YES
+                       //     View controller-based status bar appearence : NO
+                       // ・ストーリボードview controllerのstatus barをnone
+
+UIScreen
+    +mainScreen    // UIScreen*を返す
+
+    -bounds              // ステータスバーを含む画面サイズCGRectを返す
+    -applicationFrame    // ステータスバーを含まない画面サイズCGRectを返す
+    -scale
+
+    // 3inch: 320x480
+    // 4inch: 320x568
+
+UIResponder
+// イベントメソッド
+    touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
+    touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event
+    touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
+    touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event
+
+    [[event allTouches] count]
+
+UIControl
+    addTarget:self action:@selector(funcabc:) forControlEvents:UIControlEventTouchDown
+                // イベントと処理を紐付ける
+                // このメソッドを呼び出したUIControlで、指定したイベントが発生したら、
+                // ターゲットのメソッドを呼ぶ？
+                // 指定できるメソッドの形式？↓
+                // -(void)funcabc:(id)sender {}
+
+UIViewController
+    view
+
+UIView
+    +animateWithDuration:1.0f animations:^{ self.imageview.frame = rc; }
+                    // 現在のviewの状態から指定した状態へ、指定した時間アニメーションする
+
+    tag                         // ビューを識別する為のNSInteger。
+                                // userInteractionEnabledを有効にしないと利用できない。
+    userInteractionEnabled      // タッチ操作を有効にする属性
+                                // (ユーザーイベントを無視し、イベントキューから削除するかどうか。
+                                // UIImageViewでxcode5上から変更しても有効にならないバグを確認)
+    multipleTouchEnabled        // マルチタッチ操作を有効にする属性
+
+    initWithFrame:rect
+    addSubview:button           // ビューにUIView*を追加する
+    removeFromSuperview         // 親ビューからこのビューを削除する。
+                                // このビューはreleaseされる？
+
+    bringSubviewToFront:view    // 指定した子のビューを兄弟ビューの上に見える様に移動する
+    sendSubviewToBack:view      // 指定した子のビューを兄弟ビューの下に見える様に移動する
+
+    convertPoint:pos toView:otherView // このビューの座標posをotherViewの座標に変換する
+
+    // コールバックメソッド
+    viewDidLoad     // viewを最初に参照した際に呼び出される。ビューコントローラならself.viewで呼び出される。
+
+UITouch
+    view                        // タッチしたビュー
+
+    locationInView:view         // 指定したviewに基くCGPointを返す
+
+UILabel
+    .text
+
+UIButton
+    buttonWithType:UIButtonTypeRoundedRect        // ボタンを作成する
+
+    titleLabel                                    // 現在の状態に基くラベル？
+    setTitle:@"abc" forState:UIControlStateNormal // ボタンのラベルを設定する
+    setImage:image  forState:UIControlStateNormal // ボタンの画像を設定する
+
+UISegmentedControl
+    -setTitle:@"abc" forSegmentAtIndex:0          // インデックス0のテキストを変更
+
+UIAlertView
+    // delegateメソッド
+    alertView:clickedButtonAtIndex: //ボタンがタップされた時に呼び出される
+    alertViewShouldEnableFirstOtherButton: //ボタンを有効にするかどうか（return ...  NO:無効 / YES：有効）
+    willPresentAlertView: //アラート表示直前に呼び出される
+    didPresentAlertView: //アラート表示直後に呼び出される
+    alertView:willDismissWithButtonIndex: //閉じる直前
+    alertView:didDismissWithButtonIndex: //閉じた直後
+    alertViewCancel: //キャンセルされた時に呼ばれる
+
+// ------------------------------------------------------------------------------------
+// ナビゲーションバーのサイズ取得(ナビゲーションコントローラを取得できない場合の例)
+UINavigationController* temp = [[UINavigationController alloc] init];
+CGSize size = temp.navigationBar.size;
+
+// ------------------------------------------------------------------------------------
+AudioToolBox.framework
+
+#import <AudioToolbox/AudioServices.h>
+
+AudioServicesPlayAlertSound(kSystemSoundID_Vibrate) // バイブレーション
+AudioServicesRemoveSystemSoundCompletion(kSystemSoundID_Vibrate)
+
+// ------------------------------------------------------------------------------------
+mediaplayer.framework
+
+MPMoviePlayerController
+    initWithContentURL:nsurl
+    contentURL          //
+    shouldAutoplay      //
+    controlStyle        // MPMovieControlStyleNone
+    view.frame=rect     // 表示サイズ変更。
+                        // 元の動画の比と異なる場合は、比は維持され余白は黒となる。
+
+    play                // 再生する。
+                        // 実際に再生開始されてしまえば恐らくマルチスレッドで再生完了まで動く。
+                        // つまり、再生中であってもその間は処理が行える。
+
+    prepareToPlay       // 再生用のプレイヤーを準備する(必須)
+
+// ------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
+SKPaymentQueue
+    +canMakePayments     // ペイメントによる購入が可能かどうか確認する
+                         // (ユーザは購入機能をOFFにできる為)
+
+// ------------------------------------------------------------------------------------
+// メモ
+// ------------------------------------------------------------------------------------
+どうしても drawRect: の外で描画したいと思うのであれば、
+オフスクリーンを作るという手もあります。
+
+- (id)init {
+    if (self = [super init]) {
+        // 新しいイメージを作って CGContextRef を取得
+        context = CGBitmapContextCreate(/* 適当にごちゃごちゃした引数を渡してオフスクリーンを作る */);
+        // このコンテキストから CGImageRef を取り出して UIImage を作成
+        CGImageRef image = CGBitmapContextCreateImage(context);
+        contextImage = [UIImage imageWithCGImage:image];
+        CGImageRelease(image);
+    }
+}
+- (void)dealloc {
+    [contextImage release];
+    CGContextRelease(context);
+}
+// なんかの処理
+- (void)doSomething {
+    UIGraphicsPushContext(context);
+    // image をオフスクリーンに描画
+    UIImage* image = [UIImage imageNamed:@"xxx.png"];
+    [image drawAtPoint:CGPointMake(10, 10)];
+    UIGraphicsPopContext(context);
+ 
+    // 必要であればビューの再描画を依頼する
+    // [self setNeedsDisplay];
+}
+// オフスクリーンをビューに描画
+- (void)drawRect:(CGRect)rect {
+    [contextImage drawAtPoint:CGPointMake(0,0)];
+}
+
+// ------------------------------------------------------------------------------------
+申請
+
+itunes connectで
+・アプリケーションのNew Versionを登録
+・New Versionページ右上の「upload ..binary」?をクリック
+    2ページ目?下の項目を選択
+
+xcodeで
+・「Bundle identifier」と「Budle version」を設定する
+・「Edit Scheme」で「Archive」が「Release」になっている事を確認
+・プロジェクト名＞「Build Settings」＞「CodeSigning」のReleaseの
+  プロビジョニングプロファイルをを選択
+・ビルドボタン隣の実行デバイスは「iOS Device」を選択
+・メニュー「Product」＞「Archive」を実行
+
+自動で開いたOrganizerウィンドウで
+・「Validate」実行
+    入力するapple idは自分のidを入力
+・「Distribute」実行
+    「Submit to the iOS App Store」を選択
+
+itunes connectで
+・New Versionのステータスが「Waiting For Review」になっている事を確認
+
+// ------------------------------------------------------------------------------------
+http://qiita.com/SolaRayLino/items/b759e84bfe197ba0f16d
+
+Xcode5でiOS5.1対応のアプリを作る
+
+手順
+
+1.プロジェクトナビゲーターでプロジェクトを選択
+2.「Target」「Build Settings」「Architecture」を「Standard architectures (armv7, armv7s)」へ変更
+3.「Target」「General」「Deployment Info」「Deployment Target」が「5.1」へ変更できるようになるので変更
+4.「Project」「Info」の「iOS Deployment Target」も「5.1」へ変更
+5.「Project」「Info」下部にある「Use Base Internationalization」のチェックをはずす
+  チェックをはずすと「Do you want to remove the Base localization」と出てくるので
+  「Delete localized resources files from disk」にチェックを入れず「Remove」を選択
+  ＊国際化したStoryboardをまとめられるのはiOS6からのため
+6.「Finder」を開いて対象プロジェクトフォルダの中にある「Base.lproj/Main.storyboard」を「en.lproj」へ移動する
+7.6で移動させた「Main.storyboard」をプロジェクトへ追加する
+8.「Main.storyboard」を開き「ファイルインスペクタ」にある「Use Autolayout」のチェックをはずす。
+  ＊AutolayoutはiOS6からのため
+
+その他注意点など
+
+・Marvericksの場合はシミュレーターがインストールできないので実機でしか実行できずorz
+・iOS5以降でしか使えない機能に注意、バージョン判定して分岐させるなどの対応が必要
+  UITableViewController の preferredContentSize や UITableView の dequeueReusableCellWithIdentifier など
+
+// ------------------------------------------------------------------------------------
+// vim: filetype=c:

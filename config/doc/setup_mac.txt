@@ -1,0 +1,23 @@
+■shell
+・.bash_profileをコピー
+・.bashrcをコピー
+
+■vim
+・MacVimをインストール
+・vundleをインストール
+・.vimrc, .gvimrcをコピー
+・bundle installを実行
+・.vim/内に必要なファイルをコピー
+・.ctagsをホームディレクトリにコピー
+
+■入力周り
+・システム環境設定＞キーボードで、ctrlとcapsを交換
+・karabinerインストール
+    ・private.xmlを用意した内容に変更
+    ・「For PC Users＞Use PC Style Copy/Paste」「For Japanese＞Change SpaceKey」を有効にする
+    ・Key Repeatを変更
+
+■他
+・~/bin/ツールコピー
+・trash-cliインストール
+
