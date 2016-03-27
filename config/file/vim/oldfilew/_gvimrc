@@ -1,0 +1,65 @@
+"---------------------------------------------------------------------------
+" インタフェース設定
+"---------------------------------------------------------------------------
+set columns=96  " ウインドウの幅
+set lines=50    " ウインドウの高さ
+
+set guioptions-=m  " メニューの非表示
+"set guioptions-=T  " ツールバーの非表示
+
+"---------------------------------------------------------------------------
+" 文字表示設定
+"---------------------------------------------------------------------------
+" フォントの設定(フォント名は使っているGUIに依存する)
+if has('x11') || has('gui_gtk')
+    set guifont=DejaVu\ Sans\ Mono\ 10
+elseif has('gui_win32')
+    set guifont=MS_Gothic:h12:cDEFAULT
+endif
+
+set ambiwidth=double " unicodeのambiguous width文字の幅を2文字分に設定
+                     " .vimrcでも良いがターミナルが表示に対応してないと正しく表示されない
+
+"---------------------------------------------------------------------------
+" マウス設定
+"---------------------------------------------------------------------------
+set mousehide       " 入力時にマウスカーソルを隠す
+
+"---------------------------------------------------------------------------
+" その他機能設定
+"---------------------------------------------------------------------------
+"set guioptions+=a  " 範囲選択する度に自動でクリップボードへ送る
+
+"---------------------------------------------------------------------------
+" カラー設定(ターミナルは.vimrc、GUIは.gvimrcでないと反映されない？)
+"---------------------------------------------------------------------------
+colorscheme evening " 背景黒のカラーを設定
+
+hi StatusLine   guifg=#14144B guibg=LightGray   " ステータスバー
+hi StatusLineNC guifg=#14144B guibg=DarkGray    " ステータスバー(非アクティブ)
+hi ErrorMsg     guifg=Red     guibg=Black       " エラーメッセージ
+hi LineNr       guifg=DarkGray                  " 行番号
+hi CursorLine   guibg=NONE                      " カーソル行
+"hi Visual       guibg=#707070                   " 選択領域
+
+if has('xim') || has('multi_byte_ime')
+    hi CursorIM guifg=NONE guibg=Purple         " 日本語入力ON時のカーソル
+endif
+
+"hi preproc      ctermfg=red
+hi number       guifg=Red
+hi Constant     guifg=#ff80ff guibg=grey5
+hi Character    guifg=Red
+hi SpecialChar  guifg=Red guibg=grey5
+hi Ignore       guifg=Red
+"hi ErrorMsg     cterm=bold ctermbg=0 ctermfg=1
+"hi DiffText     ctermbg=0  ctermfg=1
+"hi Error        cterm=bold ctermbg=0 ctermfg=1
+
+" キーワードの追加登録
+syntax keyword cMyType uint ulong uchar
+hi link cMyType Type
+
+" 全角スペース表示用
+hi JpSpace guibg=#454545
+
