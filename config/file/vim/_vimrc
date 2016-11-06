@@ -168,6 +168,7 @@ Plugin 'Shougo/unite.vim'
 Plugin 'Shougo/vimfiler'
 Plugin 'Shougo/vimproc'
 Plugin 'thinca/vim-qfreplace'
+Plugin 'AndrewRadev/switch.vim'
 Plugin 'LeafCage/yankround.vim'
 
 "Plugin 'justmao945/vim-clang'
